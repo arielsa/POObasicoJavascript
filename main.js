@@ -8,9 +8,9 @@ function videoStop(id){
   console.log("Pausamos la url "+urlSecreta);
 }
 
-////////////////////// defino una clase exportable
+////////////////////// defino una clase exportable/ le sacamos el export para trabajar sin modulos
 
-export class PlatziClass{
+/*export*/ class PlatziClass{
   constructor({
     name,
     videoID,
@@ -29,10 +29,14 @@ class Course{
   constructor({
     name,
     classes=[],
+    isFree = false,
+    lang = 'ES',
   })
   {
     this._name=name;
     this.classes=classes;
+    this.isFree=isFree;
+    this.lang=lang;
   }
   get name(){return this._name;}
 
@@ -53,12 +57,23 @@ class Course{
 const cursoProgBasica=new Course(
   {
     name:"Curso Gratis de Programación Básica",
+    isFree:true,
+    lang:'ES',
   }
 );
 
-const cursoDefinitivoHTML=new Course({name:"Curso Definitivo de HTML y CSS",});
+const cursoDefinitivoHTML=new Course(
+  {
+    name:"Curso Definitivo de HTML y CSS",
+    isFree:false,
+    lang:'EN'
+  });
 
-const cursoPracticoHTML=new Course({name:"Curso Practico de HTML y CSS",});
+const cursoPracticoHTML=new Course(
+  {name:"Curso Practico de HTML y CSS",
+  isFree:false,
+  lang:'ES',
+});
 
 ///////////////////////// class learningPath, ruta de aprendizaje:
 
@@ -97,7 +112,7 @@ const escuelaVgs=new LearningPath({
   courses:[cursoProgBasica,"Curso de Unity","Curso de Unreal",],
 })
 
-//////////////////////////////// class student
+//////////////////////////////// super class student
 
 class Student{
   constructor({
@@ -120,9 +135,53 @@ class Student{
   }
 }
 
+/////////////class extends:
+
+class freeStudent extends Student{
+
+  constructor(props){
+    super(props);/////////////// super hace referencia a la super clase y con props le enviamos los parametros de la super clase al constructor de la subclase
+  }
+
+  approvedCourses(nuevoCourse){
+    if (!nuevoCourse.isFree){
+      this.approvedCourses.push(nuevoCourse);
+    }else{
+      console.warn('no disponible');
+    }
+  }
+
+}
+
+class basicStudent extends Student{
+  constructor(props){
+    super(props);
+  }
+  approvedCourses(nuevoCourse){
+    if (nuevoCourse.lang !== 'EN'){
+      this.approvedCourses.push(nuevoCourse);
+    }else{
+      console.warn('no disponibles cursos en ingles');
+    }
+  }
+}
+
+class expertStudent extends Student{
+  constructor(props){
+    super(props);
+  }
+  approvedCourses(nuevoCourse){
+    if (nuevoCourse){
+      this.approvedCourses.push(nuevoCourse);
+    }else{
+      console.warn('erorr');
+    }
+  }
+}
+
 ////////////////////////////////instancio distintos students
 
-  const juan2=new Student({
+  const juan2=new freeStudent({
     name:"JuanDC",
     username:"juandc",
     email:"juanito@juanito.com",
@@ -130,7 +189,7 @@ class Student{
     learningPaths:[escuelaWeb,escuelaVgs,],
 });
 
-const miguelito2=new Student({
+const miguelito2=new basicStudent({
   name:"Miguelito",
   username:"migelitofeliz",
   email:"miguelito@juanito.com",
