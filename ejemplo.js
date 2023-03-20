@@ -4,7 +4,8 @@ const natalia = {
   age: 20,
   cursosAprobados: [
     "Curso Definitivo de HTML y CSS",
-    "Curso Práctico de HTML y CSS",
+    "Curso Práctico de HTML y CSS", 
+    
   ],
   aprobarCurso(nuevoCursito) {
     this.cursosAprobados.push(nuevoCursito);
