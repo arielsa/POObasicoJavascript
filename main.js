@@ -1,3 +1,37 @@
+
+
+///////////////// defino clase comentarios:
+
+class coment {
+  constructor(
+    {
+    content,
+    studentName,
+    studentRole="estudiante",
+    }
+
+  )
+  {
+    this.content=content;
+    this.likes=0;
+    this.studentName=studentName;
+    this.studentRole=studentRole;
+  }
+  publicar(){
+    console.log(this.studentName);
+    console.log
+    (
+      `nombre: ${this.studentName}, ${this.studentRole}
+      likes: ${this.likes}
+      ${this.content}
+      `
+    );
+  }
+
+}
+
+
+
 function videoPlay(id){///////////////////////defino el metodo y se lo agrego a la clase video
   const urlSecreta="https://platziultrasecretomasquelanasa.com/"+id;
   console.log("Se está reproduciendo desde la url "+urlSecreta);
@@ -133,9 +167,37 @@ class Student{
     this.approvedCourses=approvedCourses;
     this.learningPaths=learningPaths;
   }
+  publicarComentario(comentarioContent){
+    console.log(comentarioContent + this.name);
+
+    const comentario = new coment({
+      content:comentarioContent,
+      studentName:this.name,
+    });
+    comentario.publicar();
+    
+  }
 }
 
 /////////////class extends:
+
+class Profesor extends Student{
+  constructor(props){
+    super(props);
+  }
+  approvedCourses(nuevoCourse){   
+    this.approvedCourses.push(nuevoCourse); 
+  }
+  publicarComentario(comentarioContent){
+    const comentario = new coment({
+      content:comentarioContent,
+      studentName:this.name,
+      studentRole:'profesor',
+    });
+    comentario.publicar();
+    
+  }
+}
 
 class freeStudent extends Student{
 
@@ -180,6 +242,14 @@ class expertStudent extends Student{
 }
 
 ////////////////////////////////instancio distintos students
+
+const fredy = new Profesor({
+  name:'fredy',
+  username:'fred',
+  email:'elfredy.com',
+  twitter:'l',
+  learningPaths:[escuelaData,escuelaVgs,escuelaWeb]
+})
 
   const juan2=new freeStudent({
     name:"JuanDC",
